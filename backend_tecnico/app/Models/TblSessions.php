@@ -1,19 +1,17 @@
 <?php
+
 namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class TblUsuarios extends Model
+class TblSessions extends Model
 {
     protected $connection = 'mongodb';
-
-    
-    protected $table = 'tbl_users';
+    protected $collection = 'tbl_sessions';
 
     protected $fillable = [
+        'id_sessions',
         'id_users',
-        'name',
-        'email',
-        'password'
+        'token'
     ];
 }
