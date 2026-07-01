@@ -1,0 +1,42 @@
+.sb-sidenav {
+    height: 100vh;
+}
+
+.nav-naranja {
+    border: 2px solid #FF8C00; 
+    border-radius: 6px;        
+    padding: 4px 8px;          /* Espaciado interno */
+    transition: all 0.3s ease; /* Suaviza el cambio si añades efectos */
+}
+
+/* Opcional: Efecto al pasar el mouse */
+.nav-naranja:hover {
+    background-color: rgba(228, 146, 46, 0.1);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #ffffff;
+    text-decoration: none;
+    margin: 5px 0; /* Separación entre elementos */
+    transition: 0.3s;
+}
+
+/* El estilo de la barra naranja activa */
+.nav-link.active {
+    background-color: #f39c12; /* Color naranja de tu imagen */
+    color: #ffffff;
+    font-weight: 500;
+    /* Redondeado solo a la derecha como en tu imagen */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    /* Para que no llegue hasta el borde izquierdo */
+    margin-right: 15px; 
+}
+
+/* Alinea la flecha a la derecha si la usas */
+.ms-auto {
+    margin-left: auto;
+}
