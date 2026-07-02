@@ -1,42 +1,68 @@
+/* Estilo base del contenedor */
 .sb-sidenav {
     height: 100vh;
+    width: 260px; 
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: all 0.3s ease;
+    overflow-y: auto; 
 }
 
+/* Contenedor Naranja */
 .nav-naranja {
-    border: 2px solid #FF8C00; 
-    border-radius: 6px;        
-    padding: 4px 8px;          /* Espaciado interno */
-    transition: all 0.3s ease; /* Suaviza el cambio si añades efectos */
+    border: 2px solid #FF8C00;
+    margin: 8px 5px; 
+    border-radius: 8px;
+    padding: 2px; 
+    transition: all 0.3s ease;
 }
 
-/* Opcional: Efecto al pasar el mouse */
 .nav-naranja:hover {
     background-color: rgba(228, 146, 46, 0.1);
 }
 
+/* Enlaces */
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 12px 20px;
+    padding: 10px 15px;
     color: #ffffff;
     text-decoration: none;
-    margin: 5px 0; /* Separación entre elementos */
     transition: 0.3s;
 }
 
-/* El estilo de la barra naranja activa */
 .nav-link.active {
-    background-color: #f39c12; /* Color naranja de tu imagen */
+    background-color: #f39c12;
     color: #ffffff;
     font-weight: 500;
-    /* Redondeado solo a la derecha como en tu imagen */
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    /* Para que no llegue hasta el borde izquierdo */
-    margin-right: 15px; 
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-right: 5px;
 }
 
-/* Alinea la flecha a la derecha si la usas */
 .ms-auto {
     margin-left: auto;
 }
+
+/* --- ADAPTACIÓN RESPONSIVA --- */
+
+@media (max-width: 992px) {
+    .sb-sidenav {
+        width: 220px; 
+    }
+}
+
+/* Móviles (pantallas menores a 768px) */
+@media (max-width: 768px) {
+    .sb-sidenav {
+        width: 100%; 
+        height: auto; 
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .nav-naranja {
+        margin: 5px 2px; 
+    }
+}
+
