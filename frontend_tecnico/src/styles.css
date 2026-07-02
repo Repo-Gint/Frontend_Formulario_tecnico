@@ -10881,6 +10881,13 @@ body {
   margin-top: 56px !important;
 }
 
+#layoutSidenav_nav {
+    background-color: #494d52;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
