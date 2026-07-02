@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuariosService } from '../../services/api/usuarios/usuarios';
 import { MessagesService } from '../../services/messages/messages'; 
@@ -15,8 +15,18 @@ export class Navbar {
   constructor(
     private usuariosService: UsuariosService,
     private messages: MessagesService,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2
   ) {}
+
+  protected toggleSidebar(): void {
+    const body = document.body;
+    if (body.classList.contains('sb-sidenav-toggled')) {
+      this.renderer.removeClass(body, 'sb-sidenav-toggled');
+    } else {
+      this.renderer.addClass(body, 'sb-sidenav-toggled');
+    }
+  }
 
   protected cerrarSesion(): void {
 
