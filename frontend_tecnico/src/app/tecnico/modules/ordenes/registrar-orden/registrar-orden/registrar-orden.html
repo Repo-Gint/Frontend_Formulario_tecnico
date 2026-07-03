@@ -1,0 +1,201 @@
+<div class="modal-body dashboard">
+    <div class="pagetitle">
+        <h4 class="t-bold">{{ idOrden == null ? 'Registrar' : 'Actualizar' }} Orden</h4>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Órdenes</li>
+                <li class="breadcrumb-item active">{{ idOrden == null ? 'Registrar' : 'Actualizar' }} Orden</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="formOrden" class="row g-3" autocomplete="off">
+                        <!-- Información General -->
+                         <div class="col-lg-6"><label class="form-label">Compañia:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="company"></div>
+
+                        <div class="col-lg-6">
+                            <label class="form-label">Ingeniero:</label>
+                            <input type="text" class="form-control form-control-sm" formControlName="module">
+                        </div>
+
+                        
+                        <div class="col-lg-6"><label class="form-label">Solicitado por:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="name"></div>
+
+                        <div class="col-lg-6"><label class="form-label">Modelo:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="model"></div>
+
+                        <div class="col-lg-6 mt-3"><label class="form-label">Puesto:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="position"></div>
+
+                        <div class="col-lg-6"><label class="form-label">Número de Serie:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="serial_number"></div>
+
+                        <div class="col-lg-6 mt-3"><label class="form-label">Dirección:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="address"></div>
+                        
+                        <div class="col-lg-2"><label class="form-label">Año:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="year"></div>
+                        
+                        <div class="col-lg-4"><label class="form-label">Total de horas de Trabajo:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="name"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tipo de Orden:</label>
+                            <div class="row">
+                                <div class="col-md-3" *ngFor="let tipo of listatipoOrden">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="typeOrder"
+                                            [id]="'tipo_' + tipo.id_type_order" (change)="selectTipo(tipo)">
+                                        <label class="form-check-label" [for]="'tipo_' + tipo.id_type_order">
+                                            {{ tipo.type_order }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Lugar:</label>
+                            <input type="text" class="form-control form-control-sm" formControlName="place">
+                        </div>
+
+                        <!-- Cliente -->
+                        <div class="col-12 mt-3">
+                            <h6><strong>Cliente</strong></h6>
+                        </div>
+                        <div class="row" formGroupName="customer">
+                            <div class="col-lg-6"><label class="form-label">Nombre:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="name"></div>
+                        </div>
+
+                        <!-- Equipo -->
+                        <div class="col-12 mt-4">
+                            <h6><strong>Equipo</strong></h6>
+                        </div>
+                        <div class="row" formGroupName="equipment">
+                            <div class="col-lg-4"><label class="form-label">Marca:</label><input type="text"
+                                    class="form-control form-control-sm" formControlName="brand"></div>
+                        </div>
+
+                        <!-- Working Hours Table - Ajustado al diseño de image_954387.png -->
+                        <div class="col-12 mt-4">
+                            <div class="d-flex justify-content-between align-items-center bg-light p-2 border">
+                                <h6 class="m-0"><strong>Working Hours Table</strong></h6>
+                                <button type="button" class="btn btn-sm btn-primary">+ Add Week</button>
+                            </div>
+
+                            <!-- Ejemplo de Bloque de Semana (Se repetiría según tus semanas) -->
+                            <div class="card mt-2 border-primary">
+                                <div
+                                    class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <span>Semana 1</span>
+                                    <button type="button" class="btn btn-sm btn-light">+ Add Day</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm text-center align-middle"
+                                        formArrayName="work_hours">
+                                        <thead class="table-primary text-white">
+                                            <tr>
+                                                <th rowspan="2">DATES (Day)</th>
+                                                <th rowspan="2">MONTH / DD</th>
+                                                <th colspan="2">INCOMING</th>
+                                                <th colspan="3">WORK</th>
+                                                <th colspan="2">OUTGOING</th>
+                                                <th rowspan="2">TRAVEL TIME</th>
+                                                <th rowspan="2">ACC</th>
+                                            </tr>
+                                            <tr>
+                                                <th>DEPARTURE</th>
+                                                <th>ARRIVAL</th>
+                                                <th>START</th>
+                                                <th>FINISH</th>
+                                                <th>WORKING HOURS</th>
+                                                <th>DEPARTURE</th>
+                                                <th>ARRIVAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let work of workHours.controls; let i = index"
+                                                [formGroupName]="i">
+                                                <td><input type="text" class="form-control form-control-sm"
+                                                        placeholder="--"></td>
+                                                <td><input type="date" class="form-control form-control-sm"
+                                                        formControlName="date"></td>
+                                                <!-- Ajustar según tu estructura de formGroup -->
+                                                <td formGroupName="trip"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="start_trip"></td>
+                                                <td formGroupName="trip"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="arrival_trip"></td>
+                                                <td formGroupName="work"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="work_start"></td>
+                                                <td formGroupName="work"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="work_finish"></td>
+                                                <td><input type="number" class="form-control form-control-sm"
+                                                        formControlName="work_hours"></td>
+                                                <td formGroupName="trip"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="out_departure"></td>
+                                                <td formGroupName="trip"><input type="time"
+                                                        class="form-control form-control-sm"
+                                                        formControlName="out_arrival"></td>
+                                                <td><input type="text" class="form-control form-control-sm"
+                                                        formControlName="travel_time"></td>
+                                                <td><button type="button" class="btn btn-danger btn-sm">X</button></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <td colspan="6" class="text-end"><strong>TOTAL WEEK:</strong></td>
+                                                <td colspan="5" class="text-start"><strong>0 hrs</strong></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Objetivo y Firma -->
+                        <div class="col-12 mt-4">
+                            <label><strong>Objective:</strong></label>
+                            <textarea class="form-control" rows="3" formControlName="final_goal"></textarea>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="d-flex justify-content-between">
+                                        <label><strong>Signature / Stamp Area (Usa el Lápiz o Mouse)</strong></label>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            (click)="limpiarFirma()">Limpiar</button>
+                                    </div>
+                                    <canvas #sigCanvas class="border w-100"
+                                        style="height: 150px; cursor: crosshair; background: #f9f9f9;"></canvas>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label><strong>Ort / Place</strong></label>
+                                    <input type="text" class="form-control mb-2" formControlName="place">
+                                    <label><strong>Datum / Date</strong></label>
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button *ngIf="idOrden == null" class="btn btn-sm btn-primary" (click)="registrarOrden()">Registrar</button>
+    <button class="btn btn-sm btn-danger" (click)="cerrarModal()">{{ idOrden != null ? 'Cancelar' : 'Cerrar' }}</button>
+</div>

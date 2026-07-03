@@ -15,6 +15,11 @@ export class OrdenesService {
     return this.http.post<any>(`${api}/ordenes/registrarOrden`, formData);
   }
 
+  public obtenerRecursosRegistroOrden(): Observable<any> {
+    return this.http.get<any>(`${api}/ordenes/obtenerRecursosRegistroOrden`);
+  }
+
+
   public obtenerStatusOrdenes(): Observable<any> {
     return this.http.get<any>(`${api}/ordenes/obtenerStatusOrdenes`);
   }
@@ -23,8 +28,8 @@ export class OrdenesService {
     return this.http.post<any>(`${api}/ordenes/obtenerListaGeneralOrdenes`, data);
   }
 
-  public obtenerDetalleOrden($pkOrden: number): Observable<any> {
-    return this.http.get<any>(`${api}/ordenes/obtenerDetalleOrden/${$pkOrden}`,);
+  public obtenerDetalleOrden(idOrden: string): Observable<any> {
+    return this.http.get<any>(`${api}/ordenes/obtenerDetalleOrden/${idOrden}`,);
   }
 
   public actualizarOrden(formData: FormData): Observable<any> {

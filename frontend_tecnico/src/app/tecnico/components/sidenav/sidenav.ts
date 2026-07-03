@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -6,4 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.css',
 })
-export class Sidenav {}
+export class Sidenav {
+
+  constructor(
+    private router: Router
+  ) {}
+
+  public abrirModalRegistrarOrden(): void {
+    this.router.navigate(['/ordenes/registrar']);
+  }
+
+}
