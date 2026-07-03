@@ -7,7 +7,7 @@ use MongoDB\Laravel\Eloquent\Model;
 class TblOrdenes extends Model
 {
     protected $connection = 'mongodb';
-    protected $collection = 'tbl_orders';
+    protected $table      = 'tbl_orders';
 
     protected $fillable = [
 
@@ -15,7 +15,7 @@ class TblOrdenes extends Model
         'user_id',
 
         // Información general
-        'order_type',
+        'id_type_order',
         'module',
         'place',
         'status',

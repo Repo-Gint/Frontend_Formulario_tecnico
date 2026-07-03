@@ -86,8 +86,8 @@ class UsuariosService
         $token = Str::random(60);
 
         TblSessions::create([
-            'id_usuario' => $resultado->id_usuario,
-            'token'      => hash('sha256', $token)
+            'id_users' => (string)$resultado->id,
+            'token' => hash('sha256', $token)
         ]);
 
         return response()->json([

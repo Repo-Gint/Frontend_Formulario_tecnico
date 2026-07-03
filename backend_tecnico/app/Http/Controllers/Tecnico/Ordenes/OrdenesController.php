@@ -17,6 +17,24 @@ class OrdenesController extends Controller
         $this->ordenesService = $OrdenesService;
     }
 
+    public function obtenerRecursosRegistroOrden() {
+        try {
+            return $this->ordenesService->obtenerRecursosRegistroOrden();
+        } catch (\Throwable $error) {
+            Log::alert('*********************************************');
+            Log::alert('Error al obtener información de Recursos registro tickets');
+            Log::alert($error);
+
+            return response()->json(
+                [
+                    'error'   => $error,
+                    'mensaje' => 'Ocurrio un error interno'
+                ],
+                500
+            );
+        }
+    }
+
     public function registrarOrden(Request $request) {
         try {
             $orden = $request->all();
@@ -32,6 +50,57 @@ class OrdenesController extends Controller
                 'error' => $error,
                 'mensaje' => 'Ocurrió un error interno'
             ], 400);
+        }
+    }
+
+    public function obtenerDetalleOrden($idOrden) {
+        try {
+            return $this->ordenesService->obtenerDetalleOrden($idOrden);
+        } catch (\Throwable $error) {
+            Log::alert('*********************************************');
+            Log::alert('Error al obtener información de orden');
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error'   => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ],
+                500
+            );
+        }
+    }
+
+    public function obtenerListaOrdenes() {
+        try {
+            return $this->ordenesService->obtenerListaOrdenes();
+        } catch (\Throwable $error) {
+            Log::alert('*********************************************');
+            Log::alert('Error al obtener información de orden');
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error'   => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ],
+                500
+            );
+        }
+    }
+
+    public function obtenerListaOrdenesUsuario() {
+        try {
+            return $this->ordenesService->obtenerListaOrdenesUsuario();
+        } catch (\Throwable $error) {
+            Log::alert('*********************************************');
+            Log::alert('Error al obtener información de orden por usuario');
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error'   => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ],
+                500
+            );
         }
     }
 }
