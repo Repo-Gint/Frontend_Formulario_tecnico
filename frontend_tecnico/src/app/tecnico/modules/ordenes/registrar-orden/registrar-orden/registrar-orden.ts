@@ -23,6 +23,7 @@ export class RegistrarOrden implements AfterViewInit {
   private ctx!: CanvasRenderingContext2D;
 
   protected formOrden!: FormGroup;
+  form: FormGroup;
   protected listatipoOrden: any[] = [];
   protected listafechas:    any[] = [];
   protected tipoOrdenSeleccionado: any = {id_type_order: null,type_order: ''};
@@ -35,7 +36,66 @@ export class RegistrarOrden implements AfterViewInit {
     private ordenes:  OrdenesService,
     private fb:       FormBuilder,
     private ch:       ChangeDetectorRef
-  ) {}
+  ) {
+    this.form = this.fb.group({
+    semanas: this.fb.array([]) 
+  });
+  }
+
+  get semanas(): FormArray {
+  return this.form.get('semanas') as FormArray;
+}
+
+createDay(): FormGroup {
+  return this.fb.group({
+    id: [''],
+    date: [''],
+    month: [''],
+    trip: this.fb.group({
+      start_trip: [''],
+      arrival_trip: [''],
+      out_departure: [''],
+      out_arrival: [''],
+      travel_time: ['']
+    }),
+    work: this.fb.group({
+      work_start: [''],
+      work_finish: [''],
+      work_hours: ['']
+    }),
+    comments: ['']
+  });
+}
+
+// Agregar una semana nueva
+addSemana(): void {
+  const semanaGroup = this.fb.group({
+    dias: this.fb.array([this.createDay()]), 
+    comments: ['']                           
+  });
+  this.semanas.push(semanaGroup);
+}
+
+// Agregar día a una semana específica
+addDay(semanaIndex: number): void {
+  const dias = this.semanas.at(semanaIndex).get('dias') as FormArray;
+  dias.push(this.createDay());
+}
+
+// Eliminar día
+removeDay(semanaIndex: number, dayIndex: number): void {
+  const dias = this.semanas.at(semanaIndex).get('dias') as FormArray;
+  dias.removeAt(dayIndex);
+}
+
+// Eliminar semana
+removeSemana(index: number): void {
+  this.semanas.removeAt(index);
+}
+
+getDias(semanaIndex: number): FormArray {
+  return this.semanas.at(semanaIndex).get('dias') as FormArray;
+}
 
   async ngOnInit(): Promise<any> {
     this.messages.mensajeEsperar();
@@ -93,53 +153,74 @@ export class RegistrarOrden implements AfterViewInit {
   }
 
   public limpiarFirma(): void {
-    this.ctx.clearRect(
-      0,
-      0,
+    this.ctx.clearRect(0, 0,
       this.sigCanvas.nativeElement.width,
       this.sigCanvas.nativeElement.height
     );
   }
 
-  public selectTipo(tipo: any): void {
-  this.tipoOrdenSeleccionado.id_type_order = tipo.id_type_order;
-  this.tipoOrdenSeleccionado.type_order = tipo.type_order;
+  public selectTipo(event: any, tipo: any): void {
+
+  const actual = this.formOrden.get('id_order_type')?.value || [];
+
+  let updated = Array.isArray(actual) ? [...actual] : [];
+
+  if (event.target.checked) {updated.push(tipo.id_type_order);
+  } else {
+    updated = updated.filter(x => x !== tipo.id_type_order);
+  }
 
   this.formOrden.patchValue({
-    id_type_order: tipo.id_type_order
+    id_order_type: updated
   });
 }
 
   private crearFormOrden(): void {
 
-    this.formOrden = this.fb.group({
+  this.formOrden = this.fb.group({
 
-      id_type_order: ['', Validators.required],
-      module:        ['', Validators.required],
-      place:         ['', Validators.required],
-      id_status_order: [''],
+    id_order_type: [''],
+    id_status_order: [1],
 
-      customer: this.fb.group({
-        company: ['', Validators.required],
-        name: ['', Validators.required],
-        position: ['', Validators.required],
-        address: ['', Validators.required]
-      }),
+     enginner: [''],
+     place: [''],
 
-      equipment: this.fb.group({
-        year: ['', Validators.required],
-        model: ['', Validators.required],
-        serial_number: ['', Validators.required]
-      }),
+    customer: this.fb.group({
 
-      work_hours: this.fb.array([]),
+      company: ['', Validators.required],
+      customer: ['', Validators.required],
+      position: ['', Validators.required],
+      email_customer: ['', Validators.required],
+      address: ['', Validators.required]
 
-      final_goal: ['', Validators.required],
+    }),
 
-      signature: [null]
+    equipment: this.fb.group({
 
-    });
-  }
+      year: ['', Validators.required],
+      model: ['', Validators.required],
+      serial_number: ['', Validators.required],
+      work_hours_total: ['', Validators.required]
+
+    }),
+
+    work_hours: this.fb.array([]),
+
+    final_goal: ['', Validators.required],
+
+    signature: [null],
+
+    started_by: [null],
+    start_date: [null],
+
+    cancelled_by: [null],
+    cancelled_at: [null],
+
+    finished_by: [null],
+    finished_at: [null]
+  });
+
+}
 
   get workHours(): FormArray {
     return this.formOrden.get('work_hours') as FormArray;
@@ -151,29 +232,27 @@ export class RegistrarOrden implements AfterViewInit {
 
       this.fb.group({
 
-        id: [''],
-        week: [''],
-        date: [''],
+        id:    [''],
+        week:  [''],
+        date:  [''],
         month: [''],
 
         trip: this.fb.group({
-          start_trip: [''],
-          arrival_trip: [''],
+          start_trip:    [''],
+          arrival_trip:  [''],
           out_departure: [''],
-          out_arrival: [''],
-          travel_time: ['']
+          out_arrival:   [''],
+          travel_time:   ['']
         }),
 
         work: this.fb.group({
-          work_start: [''],
+          work_start:  [''],
           work_finish: [''],
-          work_hours: ['']
+          work_hours:  ['']
         }),
 
         comments: ['']
-
       })
-
     );
   }
 
@@ -250,40 +329,25 @@ export class RegistrarOrden implements AfterViewInit {
               }),
 
               comments: [work.comments]
-
             })
-
           );
-
         });
 
         this.ch.detectChanges();
-
       },
 
       error => {
-
         this.modal.cerrarModal();
-
-        this.messages.mensajeGenerico(
-          'Ocurrió un error.',
-          'error',
-          'Error'
-        );
-
+        this.messages.mensajeGenerico('Ocurrió un error.', 'error', 'Error');
       }
-
     );
-
   }
 
   protected registrarOrden(): void {
 
     if (!this.idOrden && this.formOrden.invalid) {
 
-      this.messages.mensajeGenerico(
-        'Aún hay campos vacíos o inválidos.',
-        'info',
+      this.messages.mensajeGenerico('Aún hay campos vacíos o inválidos.', 'info',
         'Campos requeridos'
       );
 
@@ -292,65 +356,30 @@ export class RegistrarOrden implements AfterViewInit {
 
     this.messages.mensajeConfirmacionCustom(
       '¿Está seguro de registrar la orden?',
-      'question',
-      'Registrar orden'
-    ).then(res => {
+      'question', 'Registrar orden').then(res => {
 
       if (!res.isConfirmed) return;
 
       this.messages.mensajeEsperar();
-
       const datos = this.formOrden.getRawValue();
-
       const formData = new FormData();
 
-      formData.append('order_type', datos.order_type);
+      formData.append('id_order_type', datos.id_order_type);
       formData.append('module', datos.module);
       formData.append('place', datos.place);
       formData.append('final_goal', datos.final_goal);
+      if (datos.signature) {formData.append('signature', datos.signature);}
+      formData.append('customer', JSON.stringify(datos.customer));
+      formData.append('equipment', JSON.stringify(datos.equipment));
+      formData.append('work_hours', JSON.stringify(datos.work_hours));
 
-      if (datos.signature) {
-        formData.append('signature', datos.signature);
-      }
-
-      formData.append(
-        'customer',
-        JSON.stringify(datos.customer)
-      );
-
-      formData.append(
-        'equipment',
-        JSON.stringify(datos.equipment)
-      );
-
-      formData.append(
-        'work_hours',
-        JSON.stringify(datos.work_hours)
-      );
-
-      this.ordenes.registrarOrden(formData)
-        .toPromise()
-        .then((respuesta: any) => {
-
-          this.messages.mensajeGenerico(
-            respuesta.mensaje,
-            'success',
-            respuesta.title
-          );
-
+      this.ordenes.registrarOrden(formData).toPromise().then((respuesta: any) => {
+          this.messages.mensajeGenerico(respuesta.mensaje,'success',respuesta.title);
           this.modal.cerrarModal();
-
         })
         .catch(() => {
-
-          this.messages.mensajeGenerico(
-            'Ocurrió un error.',
-            'error',
-            'Error'
-          );
-
+          this.messages.mensajeGenerico('Ocurrió un error.', 'error', 'Error');
         });
-
     });
 
   }
@@ -369,17 +398,11 @@ export class RegistrarOrden implements AfterViewInit {
     }
 
     this.messages.mensajeConfirmacionCustom(
-      '¿Está seguro de cerrar sin guardar cambios?',
-      'question',
-      'Cancelar registro'
-    ).then(res => {
+      '¿Está seguro de cerrar sin guardar cambios?', 'question', 'Cancelar registro').then(res => {
 
       if (!res.isConfirmed) return;
 
       this.modal.cerrarModal();
-
     });
-
   }
-
 }
