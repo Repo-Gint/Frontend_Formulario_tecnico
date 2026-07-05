@@ -13,7 +13,7 @@ class OrdenesRepository
 
         $registro->user_id = request()->id_usuario_auth;
 
-        $registro->id_type_order      = $orden['id_type_order'];
+        $registro->id_type_order = $orden['id_order_type'];
         $registro->module             = $orden['module'];
         $registro->place              = $orden['place'];
         $registro->customer           = $orden['customer'];
