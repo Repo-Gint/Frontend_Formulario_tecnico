@@ -24,9 +24,9 @@ export class OrdenesService {
     return this.http.get<any>(`${api}/ordenes/obtenerStatusOrdenes`);
   }
 
-  public obtenerListaGeneralOrdenes(data: any): Observable<any> {
-    return this.http.post<any>(`${api}/ordenes/obtenerListaGeneralOrdenes`, data);
-  }
+  	public obtenerListaOrdenesUsuario(): Observable<any> {
+  return this.http.get<any>(`${api}/ordenes/obtenerListaOrdenesUsuario`);
+}
 
   public obtenerDetalleOrden(idOrden: string): Observable<any> {
     return this.http.get<any>(`${api}/ordenes/obtenerDetalleOrden/${idOrden}`,);

@@ -1,1 +1,104 @@
-<p>consulta-ordenes works!</p>
+<div class="pagetitle">
+    <h1>Órdenes</h1>
+
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Órdenes</li>
+            <li class="breadcrumb-item active">
+                Consulta
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+
+    <div class="row">
+
+        <div
+            class="col-xl-4 col-lg-6 col-md-6 mb-4"
+            *ngFor="let orden of datosTabla">
+
+            <div
+                class="card shadow-sm h-100 orden-card"
+                (click)="abrirModalRegistrarOrden(orden.id)">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                {{ orden.customer?.company || 'Sin empresa' }}
+                            </h5>
+
+                            <small class="text-muted">
+                                {{ orden.customer?.customer }}
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-primary">
+
+                            {{
+                                orden.id_status_order == 1
+                                    ? 'Pendiente'
+                                    : orden.id_status_order == 2
+                                    ? 'En proceso'
+                                    : 'Finalizada'
+                            }}
+
+                        </span>
+
+                    </div>
+
+                    <hr>
+
+                    <p class="mb-2">
+
+                        <strong>Lugar:</strong>
+
+                        {{ orden.place }}
+
+                    </p>
+
+                    <p class="mb-2">
+
+                        <strong>Objetivo:</strong>
+
+                        {{ orden.final_goal }}
+
+                    </p>
+
+                    <p class="mb-2">
+
+                        <strong>Ingeniero:</strong>
+
+                        {{ orden.enginner }}
+
+                    </p>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between">
+
+                        <small class="text-muted">
+
+                            {{ orden.created_at | date:'dd/MM/yyyy' }}
+
+                        </small>
+
+                        <i class="bi bi-chevron-right fs-5"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

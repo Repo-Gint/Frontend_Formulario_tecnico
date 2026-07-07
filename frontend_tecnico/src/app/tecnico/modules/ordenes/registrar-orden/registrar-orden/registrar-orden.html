@@ -75,50 +75,68 @@
                             <label class="form-label fw-bold">Tipo de Orden:</label>
 
                             <div class="row">
+
                                 <div class="col-md-3" *ngFor="let tipo of listatipoOrden">
+
                                     <div class="form-check">
+
                                         <input class="form-check-input" type="checkbox"
-                                            [id]="'tipo_' + tipo.id_type_order" (change)="selectTipo($event, tipo)">
+                                            [id]="'tipo_' + tipo.id_type_order"
+                                            [checked]="tiposSeleccionados.includes(tipo.id_type_order.toString())"
+                                            (change)="selectTipo($event, tipo)">
 
                                         <label class="form-check-label" [for]="'tipo_' + tipo.id_type_order">
 
                                             {{ tipo.type_order }}
 
                                         </label>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
 
+                        <!-- Working Hours Table -->
+                        <div class="col-12 mt-4" [formGroup]="formOrden">
 
-                        <!-- Working Hours Table - Ajustado al diseño de image_954387.png -->
-                        <div class="col-12 mt-4" [formGroup]="form">
-                            <!-- Botón Global Agregar Semana -->
                             <div class="d-flex justify-content-between align-items-center bg-light p-2 border">
                                 <h6 class="m-0"><strong>Working Hours Table</strong></h6>
-                                <button type="button" class="btn btn-primary" (click)="addSemana()">+ Add Week</button>
+                                <button type="button" class="btn btn-primary" (click)="addSemana()">
+                                    + Add Week
+                                </button>
                             </div>
 
-                            <!-- Contenedor de Semanas -->
+                            <!-- SEMANAS -->
                             <div formArrayName="semanas">
+
                                 <div *ngFor="let semana of semanas.controls; let i = index" [formGroupName]="i"
                                     class="card mt-4 border-primary">
 
-                                    <!-- Encabezado Semana -->
+                                    <!-- HEADER SEMANA -->
                                     <div
                                         class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                         <span>Semana {{ i + 1 }}</span>
+
                                         <div>
-                                            <button type="button" class="btn btn-sm btn-light me-2"
-                                                (click)="addDay(i)">+ Add Day</button>
+                                            <button type="button" class="btn btn-sm btn-light me-2" (click)="addDay(i)">
+                                                + Add Day
+                                            </button>
+
                                             <button type="button" class="btn btn-sm btn-danger"
-                                                (click)="removeSemana(i)">Eliminar Semana</button>
+                                                (click)="removeSemana(i)">
+                                                Eliminar Semana
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <!-- Tabla de Días -->
+                                    <!-- TABLE -->
                                     <div class="table-responsive">
+
                                         <table class="table table-bordered table-sm text-center align-middle">
+
                                             <thead class="table-primary text-white">
                                                 <tr>
                                                     <th rowspan="2">DATES (Day)</th>
@@ -129,6 +147,7 @@
                                                     <th rowspan="2">TRAVEL TIME</th>
                                                     <th rowspan="2">ACC</th>
                                                 </tr>
+
                                                 <tr>
                                                     <th>DEPARTURE</th>
                                                     <th>ARRIVAL</th>
@@ -139,65 +158,99 @@
                                                     <th>ARRIVAL</th>
                                                 </tr>
                                             </thead>
+
                                             <tbody formArrayName="dias">
+
                                                 <tr *ngFor="let day of getDias(i).controls; let j = index"
                                                     [formGroupName]="j">
 
-                                                    <!-- Columna Día y Fecha -->
+                                                    <!-- DATE -->
                                                     <td>
                                                         <select class="form-control form-control-sm"
                                                             formControlName="date">
                                                             <option value="">--</option>
                                                             <option *ngFor="let fecha of listafechas"
-                                                                [value]="fecha.date_name">{{ fecha.day_name }}</option>
+                                                                [value]="fecha.id_day">
+                                                                {{ fecha.day_name }}
+                                                            </option>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" class="form-control form-control-sm"
-                                                            formControlName="month"></td>
 
-                                                    <!-- INCOMING (TRIP) -->
+                                                    <!-- MONTH -->
+                                                    <td>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            formControlName="month">
+                                                    </td>
+
+                                                    <!-- INCOMING -->
                                                     <ng-container formGroupName="trip">
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="start_trip"></td>
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="arrival_trip"></td>
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="start_trip">
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="arrival_trip">
+                                                        </td>
                                                     </ng-container>
 
                                                     <!-- WORK -->
                                                     <ng-container formGroupName="work">
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="work_start"></td>
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="work_finish"></td>
-                                                        <td><input class="form-control form-control-sm" type="number"
-                                                                formControlName="work_hours"></td>
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="work_start">
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="work_finish">
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="number"
+                                                                formControlName="work_hours">
+                                                        </td>
                                                     </ng-container>
 
-                                                    <!-- OUTGOING (TRIP) -->
+                                                    <!-- OUTGOING -->
                                                     <ng-container formGroupName="trip">
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="out_departure"></td>
-                                                        <td><input class="form-control form-control-sm" type="time"
-                                                                formControlName="out_arrival"></td>
-                                                        <td><input class="form-control form-control-sm" type="text"
-                                                                formControlName="travel_time"></td>
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="out_departure">
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="time"
+                                                                formControlName="out_arrival">
+                                                        </td>
+
+                                                        <td>
+                                                            <input class="form-control form-control-sm" type="text"
+                                                                formControlName="travel_time">
+                                                        </td>
                                                     </ng-container>
 
-                                                    <!-- ACC / BORRAR DÍA -->
+                                                    <!-- DELETE -->
                                                     <td>
                                                         <button type="button" class="btn btn-danger btn-sm"
-                                                            (click)="removeDay(i, j)">X</button>
+                                                            (click)="removeDay(i, j)">
+                                                            X
+                                                        </button>
                                                     </td>
+
                                                 </tr>
+
                                             </tbody>
                                         </table>
                                     </div>
 
-                                    <!-- Campo Comentarios por Semana -->
-                                    <div class="p-2">
-                                        <textarea class="form-control form-control-sm" formControlName="comments"
-                                            placeholder="Add comments here..."></textarea>
+                                    <div class="mt-3">
+                                        <textarea class="form-control" formControlName="comments"
+                                            placeholder="Escribe un comentario de la semana...">
+                </textarea>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -209,21 +262,48 @@
 
                         <div class="col-12 mt-3">
                             <div class="row">
+
                                 <div class="col-lg-6">
+
                                     <div class="d-flex justify-content-between">
-                                        <label><strong>Signature / Stamp Area (Usa el Lápiz o Mouse)</strong></label>
+
+                                        <label>
+                                            <strong>
+                                                Signature / Stamp Area (Usa el Lápiz o Mouse)
+                                            </strong>
+                                        </label>
+
                                         <button type="button" class="btn btn-sm btn-outline-danger"
-                                            (click)="limpiarFirma()">Limpiar</button>
+                                            (click)="limpiarFirma()">
+                                            Limpiar
+                                        </button>
+
                                     </div>
+
                                     <canvas #sigCanvas class="border w-100"
-                                        style="height: 150px; cursor: crosshair; background: #f9f9f9;"></canvas>
+                                        style="height: 150px; cursor: crosshair; background:#f9f9f9;">
+                                    </canvas>
+
                                 </div>
+
+
                                 <div class="col-lg-6">
-                                    <label><strong>Ort / Place</strong></label>
+
+                                    <label>
+                                        <strong>Ort / Place</strong>
+                                    </label>
+
                                     <input type="text" class="form-control mb-2" formControlName="place">
-                                    <label><strong>Datum / Date</strong></label>
-                                    <input type="date" class="form-control">
+
+
+                                    <label>
+                                        <strong>Datum / Date</strong>
+                                    </label>
+
+                                    <input type="date" class="form-control" formControlName="date">
+
                                 </div>
+
                             </div>
                         </div>
                     </form>
@@ -236,4 +316,11 @@
 <div class="modal-footer">
     <button *ngIf="idOrden == null" class="btn btn-sm btn-primary" (click)="registrarOrden()">Registrar</button>
     <button class="btn btn-sm btn-danger" (click)="cerrarModal()">{{ idOrden != null ? 'Cancelar' : 'Cerrar' }}</button>
+    <button 
+        *ngIf="idOrden != null" 
+        class="btn btn-sm btn-warning"
+        (click)="actualizarOrden()">
+        Actualizar
+    </button>
+
 </div>

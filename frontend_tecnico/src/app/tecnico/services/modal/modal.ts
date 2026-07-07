@@ -42,6 +42,7 @@ export class ModalService {
 			modalConfig.class = 'modal-md modal-dialog-centered';
 		}
 
+		console.log(dataModal);
 		const modalRef = this.modalService.show(component, modalConfig);
 		this.modalStack.push(modalRef);
 	}
