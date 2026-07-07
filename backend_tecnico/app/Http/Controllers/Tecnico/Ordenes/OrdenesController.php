@@ -103,4 +103,21 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function actualizarOrden(Request $request) {
+        try {
+
+        Log::alert($request->all());
+
+            return $this->ordenesService->actualizarOrden($request->all());
+        } catch (\Throwable $error) {
+             Log::alert('*********************************************');
+            Log::alert('Error al actualizar Orden');
+            Log::alert($error->getMessage());
+
+            return response()->json([
+                'mensaje' => 'Ocurrio un error interno'
+            ], 500);
+        }
+    }
 }

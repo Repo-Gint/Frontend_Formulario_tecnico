@@ -5,6 +5,7 @@ namespace App\Services\Tecnico\Ordenes;
 use App\Repositories\Tecnico\Catalogos\FechasOrdenRepository;
 use App\Repositories\Tecnico\Catalogos\TipoOrdenRepository;
 use App\Repositories\Tecnico\Ordenes\OrdenesRepository;
+use GuzzleHttp\Psr7\Request;
 
 class OrdenesService
 {
@@ -91,4 +92,16 @@ class OrdenesService
             ]
         );
     }
+
+    public function actualizarOrden($orden)
+{
+    $this->ordenesRepository->actualizarOrden($orden['id'], $orden);
+
+    return response()->json(
+        [
+            'title' => 'Actualización exitosa',
+            'mensaje' => 'Se actualizó correctamente la orden'
+        ]
+    );
+}
 }

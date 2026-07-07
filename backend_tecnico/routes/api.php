@@ -25,7 +25,8 @@ Route::middleware(['auth.token'])->group(function () {
     Route::get('/ordenes/obtenerListaOrdenes',           [OrdenesController::class,    'obtenerListaOrdenes']);
     Route::get('/ordenes/obtenerListaOrdenesUsuario',    [OrdenesController::class,    'obtenerListaOrdenesUsuario']);
     Route::get('/ordenes/obtenerDetalleOrden/{idOrden}', [OrdenesController::class,    'obtenerDetalleOrden']);
-    Route::get('/ordenes/obtenerRecursosRegistroOrden',  [OrdenesController::class,     'obtenerRecursosRegistroOrden']);
+    Route::get('/ordenes/obtenerRecursosRegistroOrden',  [OrdenesController::class,    'obtenerRecursosRegistroOrden']);
+    Route::post('/ordenes/actualizarOrden',              [OrdenesController::class,    'actualizarOrden']);
     
     //FechasOrden
     Route::get('/fechasOrden/obtenerListaFechaOrden',    [FechasOrdenController::class, 'obtenerListaFechaOrden']);
